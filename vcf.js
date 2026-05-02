@@ -16,7 +16,12 @@ contactForm.addEventListener("submit", async (e) => {
   const fullname = document.getElementById("fullname").value.trim();
   const phonenumber = document.getElementById("phonenumber").value.trim();
   const college = document.getElementById("college").value;
+  
+let phone = phonenumber.replace(/\D/g, "");
 
+if (phone.startsWith("0")) {
+  phone = "233" + phone.substring(1);
+}
   // Simple validation check
   if (!fullname || !phonenumber || !college) {
     alert("Please fill in all fields correctly.");
@@ -29,18 +34,37 @@ contactForm.addEventListener("submit", async (e) => {
 
   try {
     // --- 4. SUPABASE INSERTION ---
+const { data: existing } = await _supabase
+  .from("contacts")
+  .select("id")
+  .eq("phonenumber", phonenumber)
+  .maybeSingle();
+
+if (existing) {
+  alert("This number is already registered.");
+  submitBtn.disabled = false;
+  submitBtn.innerText = "Submit";
+  return;
+}
+    
     const { data, error } = await _supabase
-      .from("contacts") // Ensure your table name is 'contacts'
-      .insert([
-        {
-          fullname: fullname,
-          phonenumber: phonenumber,
-          college: college,
-        },
-      ]);
+  .from("contacts")
+  .insert([
+    {
+      fullname,
+      phonenumber,
+      college,
+    },
+  ]);
 
-    if (error) throw error;
-
+if (error) {
+  if (error.message.includes("duplicate")) {
+    alert("This phone number is already registered.");
+  } else {
+    alert("Error: Could not save your contact.");
+  }
+  throw error;
+}
     // --- 5. SUCCESS HANDLING ---
     alert(`Success! ${fullname}, you've been added to the L100 VCF list.`);
     contactForm.reset(); // Clear the form for the next user
