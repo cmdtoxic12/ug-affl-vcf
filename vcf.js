@@ -8,6 +8,20 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const contactForm = document.querySelector(".contact-reg");
 const submitBtn = document.getElementById("submit-form");
 
+let num1, num2, correctAnswer;
+
+function generateQuestion() {
+  num1 = Math.floor(Math.random() * 10);
+  num2 = Math.floor(Math.random() * 10);
+  correctAnswer = num1 + num2;
+
+  document.getElementById("math-question").innerText =
+    `Solve this to continue: ${num1} + ${num2} = ?`;
+}
+
+// Run when page loads
+generateQuestion();
+
 // --- 3. EVENT LISTENER ---
 contactForm.addEventListener("submit", async (e) => {
   e.preventDefault(); // Prevents the default form submission (page reload)
@@ -33,6 +47,15 @@ if (phone.startsWith("0")) {
   submitBtn.innerText = "Processing...";
 
   try {
+    const userAnswer = parseInt(document.getElementById("math-answer").value);
+
+if (userAnswer !== correctAnswer) {
+  alert("Incorrect answer. Please try again.");
+  generateQuestion(); // new question
+  submitBtn.disabled = false;
+  submitBtn.innerText = "Submit";
+  return;
+}
     // --- 4. SUPABASE INSERTION ---
 const { data: existing } = await _supabase
   .from("contacts")
