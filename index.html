@@ -96,13 +96,12 @@
 
     <script>
       const username = prompt("Enter Admin Username");
-      if (username !== "anonymous112"); {
-        document.body.innerHtml = "Access Denied";
-      }
       const pass = prompt("Enter Admin Password");
-      if (pass !== "admin123") {
-        document.body.innerHTML = "Access Denied";
-      }
+      if (username !== "anonymous112");
+       if (pass !== "admin123") {
+        document.body.innerHtml = "Access Denied";
+       }
+      
       // REPLACE with your actual Supabase Details
       const SUPABASE_URL = "https://nianlnujdqnkzlesnlbp.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pYW5sbnVqZHFua3psZXNubGJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MDg2NDQsImV4cCI6MjA5MzI4NDY0NH0.YDu4ejDYnW82Wj1LUBSCwFKHyZA0LLaiif0zTegceW4";
