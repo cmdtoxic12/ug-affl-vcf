@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="vcf.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <title>UG AFFILIATED L100 CONTACTS</title>
+  </head>
+  <body>
+    <div class="glass-card">
+      <div class="container">
+        <header>
+          <h1>UG AFFILIATED L100 VCF</h1>
+        </header>
+      </div>
+      <div class="input-group">
+        <form class="contact-reg">
+          <label for="fullname">Full Name</label>
+          <input type="text" id="fullname" placeholder="John Doe" required />
+          <label for="phonenumber">Phone Number</label>
+          <input
+            type="tel"
+            id="phonenumber"
+            placeholder="233-XXX-XXX-XXX"
+            required
+          />
+          <label for="college">College</label>
+          <select id="college" required>
+            <option value="">Select your college</option>
+            <option value="E.P College Of Edu. Amedzofe">AMECO</option>
+            <option value="Accra College Of Edu">AcCE</option>
+            <option value="Enchi College Of Edu">ENCHICO</option>
+            <option value="Gbewaa College Of Edu">GBEWAA</option>
+            <option value="Peki College Of Edu">PECHICO</option>
+            <option value="Mount Mary College Of Edu">MOUNT MARY</option>
+          </select>
+          <br />
+          <button id="submit-form" type="submit">Submit</button>
+        </form>
+      </div>
+      <footer>
+        <p>
+          &copy; ANONYMOUS' 2026 UG AFFILIATED L100 CONTACTS. All rights
+          reserved.
+        </p>
+      </footer>
+    </div>
+    <script src="vcf.js"></script>
+  </body>
+</html>

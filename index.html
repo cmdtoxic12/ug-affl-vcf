@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Panel - L100 VCF</title>
+    <link rel="stylesheet" href="vcf.css" />
+    <!-- Uses your existing Glassmorphism CSS -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+      /* Table Specific Glass Styling */
+      .admin-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        color: white;
+      }
+      .admin-table th,
+      .admin-table td {
+        padding: 12px;
+        text-align: left;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .action-btns {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 20px;
+      }
+      .btn-vcf {
+        background: #28a745;
+      }
+      .btn-del {
+        background: #dc3545;
+        padding: 5px 10px;
+        font-size: 0.8rem;
+      }
+      button {
+        cursor: pointer;
+        border: none;
+        border-radius: 5px;
+        color: white;
+        transition: 0.3s;
+      }
+      button:hover {
+        opacity: 0.8;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="glass-card">
+      <header>
+        <h1>Admin Dashboard</h1>
+        <p>Manage Affiliate Contact Entries</p>
+      </header>
+
+      <div class="action-btns">
+        <button class="btn-vcf" onclick="exportToVCF()">
+          Download All VCF
+        </button>
+        <button style="background: #6c757d" onclick="fetchEntries()">
+          Refresh List
+        </button>
+      </div>
+
+      <div class="action-btns">
+        <button class="btn-vcf" onclick="exportToVCF()">
+          Download All VCF
+        </button>
+        <button style="background: #6c757d" onclick="fetchEntries()">
+          Refresh List
+        </button>
+        <!-- New Button -->
+        <button style="background: #007bff" onclick="generateShareLink()">
+          Get Form Link
+        </button>
+      </div>
+
+      <!-- New Link Display Area -->
+      <div id="link-container" style="margin-top: 10px; display: none">
+        <input
+          type="text"
+          id="share-url"
+          readonly
+          style="padding: 8px; border-radius: 5px; border: none; width: 70%"
+        />
+        <button onclick="copyLink()" style="background: #17a2b8; padding: 8px">
+          Copy
+        </button>
+      </div>
+
+      <table class="admin-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>College</th>
+            <th>Phone</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody id="data-rows">
+          <!-- Data will load here -->
+        </tbody>
+      </table>
+    </div>
+
+    <script>
+      const pass = prompt("Enter Admin Password");
+      if (pass !== "admin123") {
+        document.body.innerHTML = "Access Denied";
+      }
+      // REPLACE with your actual Supabase Details
+      const SUPABASE_URL = "https://nianlnujdqnkzlesnlbp.supabase.co";
+      const SUPABASE_KEY = "sb_publishable_4QexRP5eFI1ns94bigWVIg_yohK_OPc";
+      const supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // Function to generate the link based on current deployment
+      function generateShareLink() {
+        const container = document.getElementById("link-container");
+        const input = document.getElementById("share-url");
+
+        // This takes the current URL (e.g., https://your-project.vercel.app/admin.html)
+        // and replaces 'admin.html' with 'vcf.html'
+        const currentUrl = window.location.href;
+        const baseUrl = currentUrl.substring(0, currentUrl.lastIndexOf("/"));
+        const vcfUrl = `${baseUrl}/vcf.html`;
+
+        input.value = vcfUrl;
+        container.style.display = "block";
+      }
+
+      // Function to copy the link to clipboard
+      function copyLink() {
+        const copyText = document.getElementById("share-url");
+        copyText.select();
+        copyText.setSelectionRange(0, 99999); // For mobile devices
+        navigator.clipboard.writeText(copyText.value);
+        alert("Link copied to clipboard!");
+      }
+
+      // Fetch entries from Supabase
+      async function fetchEntries() {
+        const { data, error } = await supabase
+          .from("contacts")
+          .select("*")
+          .order("created_at", { ascending: false });
+
+        if (error) return console.error(error);
+
+        const tbody = document.getElementById("data-rows");
+        tbody.innerHTML = data
+          .map(
+            (item) => `
+                <tr>
+                    <td>${item.fullname}</td>
+                    <td>${item.college}</td>
+                    <td>${item.phonenumber}</td>
+                    <td><button class="btn-del" onclick="deleteEntry('${item.id}')">Delete</button></td>
+                </tr>
+            `,
+          )
+          .join("");
+      }
+
+      // Delete a specific entry
+      async function deleteEntry(id) {
+        if (confirm("Are you sure you want to delete this contact?")) {
+          await supabase.from("contacts").delete().eq("id", id);
+          fetchEntries();
+        }
+      }
+
+      // Generate and Download VCF
+      async function exportToVCF() {
+        const { data } = await supabase.from("contacts").select("*");
+        if (!data || data.length === 0) return alert("No contacts found.");
+
+        let vcf = "";
+        data.forEach((item) => {
+          vcf += "BEGIN:VCARD\nVERSION:3.0\n";
+          vcf += `FN:${item.fullname}\n`;
+          vcf += `ORG:UG Affiliated;${item.college}\n`;
+          vcf += `TEL;TYPE=CELL:${item.phonenumber}\n`;
+          vcf += "END:VCARD\n";
+        });
+
+        const blob = new Blob([vcf], { type: "text/vcf" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "UG_L100_Contacts.vcf";
+        a.click();
+      }
+
+      window.onload = fetchEntries;
+    </script>
+  </body>
+</html>
