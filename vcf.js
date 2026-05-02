@@ -1,7 +1,7 @@
 // --- 1. INITIALIZATION ---
 // Replace these with your actual Supabase project credentials
 const SUPABASE_URL = "https://nianlnujdqnkzlesnlbp.supabase.co";
-const SUPABASE_KEY = "sb_publishable_4QexRP5eFI1ns94bigWVIg_yohK_OPc";
+const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pYW5sbnVqZHFua3psZXNubGJwIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzcwODY0NCwiZXhwIjoyMDkzMjg0NjQ0fQ.dDky9qzdOi3Kczffe36ctbtsprFfdD4PKdHb7x2VDjo";
 const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- 2. ELEMENT SELECTORS ---
