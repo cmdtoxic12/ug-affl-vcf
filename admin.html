@@ -92,6 +92,7 @@
           <!-- Data will load here -->
         </tbody>
       </table>
+      <button onclick="logout()">Logout</button>
     </div>
 
     <script>
@@ -104,6 +105,13 @@
       const SUPABASE_URL = "https://nianlnujdqnkzlesnlbp.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pYW5sbnVqZHFua3psZXNubGJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MDg2NDQsImV4cCI6MjA5MzI4NDY0NH0.YDu4ejDYnW82Wj1LUBSCwFKHyZA0LLaiif0zTegceW4";
       const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+
+      // 🔒 Check if user is logged in
+const { data: { session } } = await client.auth.getSession();
+
+if (!session) {
+  window.location.href = "/login.html";
+}
 
       // Function to generate the link based on current deployment
       function generateShareLink() {
@@ -184,6 +192,11 @@
       }
 
       window.onload = fetchEntries;
+      
+      async function logout() {
+  await client.auth.signOut();
+  window.location.href = "/login.html";
+}
     </script>
   </body>
 </html>
