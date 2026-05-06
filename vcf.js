@@ -21,6 +21,7 @@ function generateQuestion() {
 
 // Run when page loads
 generateQuestion();
+document.getElementById("math-answer").value = "";
 
 // --- 3. EVENT LISTENER ---
 contactForm.addEventListener("submit", async (e) => {
@@ -49,18 +50,19 @@ if (phone.startsWith("0")) {
   try {
     const userAnswer = parseInt(document.getElementById("math-answer").value);
 
-if (userAnswer !== correctAnswer) {
+if (isNaN(userAnswer) || userAnswer !== correctAnswer) {
   alert("Incorrect answer. Please try again.");
-  generateQuestion(); // new question
+  generateQuestion();
   submitBtn.disabled = false;
   submitBtn.innerText = "Submit";
   return;
+}
 }
     // --- 4. SUPABASE INSERTION ---
 const { data: existing } = await _supabase
   .from("contacts")
   .select("id")
-  .eq("phonenumber", phonenumber)
+  .eq("phonenumber", phone)
   .maybeSingle();
 
 if (existing) {
@@ -75,7 +77,7 @@ if (existing) {
   .insert([
     {
       fullname,
-      phonenumber,
+      phonenumber: phone,
       college,
     },
   ]);
@@ -99,4 +101,10 @@ if (error) {
     submitBtn.disabled = false;
     submitBtn.innerText = "Submit";
   }
+if (!phone.startsWith("233") || phone.length !== 12) {
+  alert("Enter a valid Ghana phone number.");
+  submitBtn.disabled = false;
+  submitBtn.innerText = "Submit";
+  return;
+}
 });
