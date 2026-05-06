@@ -92,25 +92,22 @@
           <!-- Data will load here -->
         </tbody>
       </table>
-      <button onclick="logout()">Logout</button>
+     
     </div>
-
+ <button onclick="logout()">Logout</button>
     <script>
-      const pass = prompt("Enter Admin Password")
-       if (pass !== "admin123") {
-        document.body.innerHtml = "Access Denied";
-       }
-      
       // REPLACE with your actual Supabase Details
       const SUPABASE_URL = "https://nianlnujdqnkzlesnlbp.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pYW5sbnVqZHFua3psZXNubGJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MDg2NDQsImV4cCI6MjA5MzI4NDY0NH0.YDu4ejDYnW82Wj1LUBSCwFKHyZA0LLaiif0zTegceW4";
       const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+      
+     
 
       // 🔒 Check if user is logged in
-const { data: { session } } = await client.auth.getSession();
+      const { data: { session } } = await client.auth.getSession();
 
-if (!session) {
-  window.location.href = "/login.html";
+      if (!session) {
+      window.location.href = "/index.html";
 }
 
       // Function to generate the link based on current deployment
@@ -144,7 +141,11 @@ if (!session) {
           .select("*")
           .order("created_at", { ascending: false });
 
-        if (error) return console.error(error);
+        if (error) { 
+          console.error(error);
+          alert("Failed to fetch data");
+          return;
+        }
 
         const tbody = document.getElementById("data-rows");
         tbody.innerHTML = data
@@ -195,7 +196,7 @@ if (!session) {
       
       async function logout() {
   await client.auth.signOut();
-  window.location.href = "/login.html";
+  window.location.href = "/index.html";
 }
     </script>
   </body>
