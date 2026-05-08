@@ -20,7 +20,10 @@ function generateQuestion() {
 }
 
 // Run when page loads
-generateQuestion();
+window.onload = () => {
+  generateQuestion();
+  document.getElementById("math-question")
+};
 
 // --- 3. EVENT LISTENER ---
 contactForm.addEventListener("submit", async (e) => {
@@ -98,7 +101,7 @@ if (error) {
     // --- 5. SUCCESS HANDLING ---
     alert(`Success! ${fullname}, you've been added to the L100 VCF list.`);
     contactForm.reset(); // Clear the form for the next user
-  } catch (err) {
+   catch (err) {
     console.error("Submission Error:", err.message);
     alert("Error: Could not save your contact. Please try again.");
   } finally {
@@ -107,3 +110,4 @@ if (error) {
     submitBtn.innerText = "Submit";
   }
 });
+}
