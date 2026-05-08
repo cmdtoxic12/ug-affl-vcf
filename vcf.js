@@ -21,7 +21,6 @@ function generateQuestion() {
 
 // Run when page loads
 generateQuestion();
-document.getElementById("math-answer").value = "";
 
 // --- 3. EVENT LISTENER ---
 contactForm.addEventListener("submit", async (e) => {
@@ -37,27 +36,33 @@ let phone = phonenumber.replace(/\D/g, "");
 if (phone.startsWith("0")) {
   phone = "233" + phone.substring(1);
 }
+
+if (!phone.startsWith("233") || phone.length !== 12) {
+  alert("Enter a valid Ghana phone number.");
+  return;
+}
   // Simple validation check
   if (!fullname || !phonenumber || !college) {
     alert("Please fill in all fields correctly.");
     return;
-  }
+}
+
+  const userAnswer = parseInt(document.getElementById("math-answer").value);
+
+  if (isNaN(userAnswer) || userAnswer !== correctAnswer) {
+    alert("Incorrect answer. Please try again.");
+    generateQuestion();
+    submitBtn.disabled = false;
+    submitBtn.innerText = "Submit";
+    return;
+}
 
   // UI Feedback: Disable button while processing
   submitBtn.disabled = true;
   submitBtn.innerText = "Processing...";
 
   try {
-    const userAnswer = parseInt(document.getElementById("math-answer").value);
-
-if (isNaN(userAnswer) || userAnswer !== correctAnswer) {
-  alert("Incorrect answer. Please try again.");
-  generateQuestion();
-  submitBtn.disabled = false;
-  submitBtn.innerText = "Submit";
-  return;
-}
-}
+    
     // --- 4. SUPABASE INSERTION ---
 const { data: existing } = await _supabase
   .from("contacts")
@@ -70,8 +75,8 @@ if (existing) {
   submitBtn.disabled = false;
   submitBtn.innerText = "Submit";
   return;
-}
-    
+  }
+   
     const { data, error } = await _supabase
   .from("contacts")
   .insert([
@@ -101,10 +106,4 @@ if (error) {
     submitBtn.disabled = false;
     submitBtn.innerText = "Submit";
   }
-if (!phone.startsWith("233") || phone.length !== 12) {
-  alert("Enter a valid Ghana phone number.");
-  submitBtn.disabled = false;
-  submitBtn.innerText = "Submit";
-  return;
-}
 });
