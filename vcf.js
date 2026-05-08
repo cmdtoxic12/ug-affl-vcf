@@ -10,69 +10,79 @@ const submitBtn = document.getElementById("submit-form");
 
 // --- 3. EVENT LISTENER ---
 contactForm.addEventListener("submit", async (e) => {
-  e.preventDefault(); // Prevents the default form submission (page reload)
+  e.preventDefault();
 
   // Capture input values
   const fullname = document.getElementById("fullname").value.trim();
   const phonenumber = document.getElementById("phonenumber").value.trim();
   const college = document.getElementById("college").value;
-  
-let phone = phonenumber.replace(/\D/g, "");
 
-if (phone.startsWith("0")) {
-  phone = "233" + phone.substring(1);
-}
-  // Simple validation check
+  // Normalize Ghana phone number
+  let phone = phonenumber.replace(/\D/g, "");
+
+  if (phone.startsWith("0")) {
+    phone = "233" + phone.substring(1);
+  }
+
+  // Validation
   if (!fullname || !phonenumber || !college) {
     alert("Please fill in all fields correctly.");
     return;
   }
 
-  // UI Feedback: Disable button while processing
+  // Ghana number validation
+  if (!phone.startsWith("233") || phone.length !== 12) {
+    alert("Enter a valid Ghana phone number.");
+    return;
+  }
+
+  // UI Feedback
   submitBtn.disabled = true;
   submitBtn.innerText = "Processing...";
 
   try {
-    // --- 4. SUPABASE INSERTION ---
-const { data: existing } = await _supabase
-  .from("contacts")
-  .select("id")
-  .eq("phonenumber", phonenumber)
-  .maybeSingle();
+    // Check duplicates
+    const { data: existing } = await _supabase
+      .from("contacts")
+      .select("id")
+      .eq("phonenumber", phone)
+      .maybeSingle();
 
-if (existing) {
-  alert("This number is already registered.");
-  submitBtn.disabled = false;
-  submitBtn.innerText = "Submit";
-  return;
-}
-    
-    const { data, error } = await _supabase
-  .from("contacts")
-  .insert([
-    {
-      fullname,
-      phonenumber,
-      college,
-    },
-  ]);
+    if (existing) {
+      alert("This number is already registered.");
+      return;
+    }
 
-if (error) {
-  if (error.message.includes("duplicate")) {
-    alert("This phone number is already registered.");
-  } else {
-    alert("Error: Could not save your contact.");
-  }
-  throw error;
-}
-    // --- 5. SUCCESS HANDLING ---
+    // Insert into database
+    const { error } = await _supabase
+      .from("contacts")
+      .insert([
+        {
+          fullname,
+          phonenumber: phone,
+          college,
+        },
+      ]);
+
+    if (error) {
+      if (error.message.includes("duplicate")) {
+        alert("This phone number is already registered.");
+      } else {
+        alert(error.message);
+      }
+      throw error;
+    }
+
+    // Success
     alert(`Success! ${fullname}, you've been added to the L100 VCF list.`);
-    contactForm.reset(); // Clear the form for the next user
-    catch (err) {
+    contactForm.reset();
+
+  } catch (err) {
     console.error("Submission Error:", err.message);
     alert("Error: Could not save your contact. Please try again.");
+
   } finally {
-    // Reset UI state
+    // Reset button
     submitBtn.disabled = false;
     submitBtn.innerText = "Submit";
   }
