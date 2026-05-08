@@ -13,7 +13,7 @@
         width: 100%;
         border-collapse: collapse;
         margin-top: 20px;
-        color: blue;
+        color: white;
       }
       .admin-table th,
       .admin-table td {
@@ -46,7 +46,7 @@
       }
     </style>
   </head>
-  <body <body style="display:none;">>
+  <body>
     <div class="glass-card">
       <header>
         <h1>Admin Dashboard</h1>
@@ -92,27 +92,17 @@
           <!-- Data will load here -->
         </tbody>
       </table>
-     
     </div>
- <button onclick="logout()">Logout</button>
+
     <script>
+      const pass = prompt("Enter Admin Password");
+      if (pass !== "admin123") {
+        document.body.innerHTML = "Access Denied";
+      }
       // REPLACE with your actual Supabase Details
       const SUPABASE_URL = "https://nianlnujdqnkzlesnlbp.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pYW5sbnVqZHFua3psZXNubGJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MDg2NDQsImV4cCI6MjA5MzI4NDY0NH0.YDu4ejDYnW82Wj1LUBSCwFKHyZA0LLaiif0zTegceW4";
       const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
-      
-     
-      async function checkAuth() {
-  const { data } = await client.auth.getUser();
-
-  if (!data.user) {
-    window.location.href = "/index.html";
-  } else {
-    document.body.style.display = "block";
-  }
-}
-
-checkAuth();
 
       // Function to generate the link based on current deployment
       function generateShareLink() {
@@ -145,11 +135,7 @@ checkAuth();
           .select("*")
           .order("created_at", { ascending: false });
 
-        if (error) { 
-          console.error(error);
-          alert("Failed to fetch data");
-          return;
-        }
+        if (error) return console.error(error);
 
         const tbody = document.getElementById("data-rows");
         tbody.innerHTML = data
@@ -169,14 +155,8 @@ checkAuth();
       // Delete a specific entry
       async function deleteEntry(id) {
         if (confirm("Are you sure you want to delete this contact?")) {
-         const { error } = await client.from("contacts").delete().eq("id", id);
-
-if (error) {
-  alert("Delete failed");
-  console.error(error);
-} else {
-  fetchEntries();
-}
+          await client.from("contacts").delete().eq("id", id);
+          fetchEntries();
         }
       }
 
@@ -202,15 +182,7 @@ if (error) {
         a.click();
       }
 
-      if (data.user) {
-  document.body.style.display = "block";
-  fetchEntries();
-}
-      
-      async function logout() {
-  await client.auth.signOut();
-  window.location.href = "/index.html";
-}
+      window.onload = fetchEntries;
     </script>
   </body>
 </html>
