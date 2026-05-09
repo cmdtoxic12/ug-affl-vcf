@@ -2,7 +2,7 @@
 // Replace these with your actual Supabase project credentials
 const SUPABASE_URL = "https://nianlnujdqnkzlesnlbp.supabase.co";
 const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pYW5sbnVqZHFua3psZXNubGJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MDg2NDQsImV4cCI6MjA5MzI4NDY0NH0.YDu4ejDYnW82Wj1LUBSCwFKHyZA0LLaiif0zTegceW4";
-const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+const client = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 
 // --- 2. ELEMENT SELECTORS ---
 const contactForm = document.querySelector(".contact-reg");
@@ -29,7 +29,7 @@ contactForm.addEventListener("submit", async (e) => {
 
   try {
     // --- 4. SUPABASE INSERTION ---
-    const { data, error } = await _supabase
+    const { data, error } = await client
       .from("contacts") // Ensure your table name is 'contacts'
       .insert([
         {
