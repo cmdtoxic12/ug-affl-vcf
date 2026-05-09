@@ -15,14 +15,20 @@ function generateQuestion() {
   num2 = Math.floor(Math.random() * 10);
   correctAnswer = num1 + num2;
 
-  document.getElementById("math-question").innerText =
-    `Solve this to continue: ${num1} + ${num2} = ?`;
-  document.getElementById("math-answer").value = "";
+  const questionEl = document.getElementById("math-question");
+  const answerEl = document.getElementById("math-answer");
+
+  if (questionEl && answerEl) {
+    questionEl.innerText =
+      `Solve this to continue: ${num1} + ${num2} = ?`;
+
+    answerEl.value = "";
+  }
 }
 
-// Run when page loads
-generateQuestion();
-
+window.addEventListener("DOMContentLoaded", () => {
+  generateQuestion();
+});
 // --- 3. EVENT LISTENER ---
 contactForm.addEventListener("submit", async (e) => {
   e.preventDefault(); // Prevents the default form submission (page reload)
