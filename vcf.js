@@ -17,6 +17,7 @@ function generateQuestion() {
 
   document.getElementById("math-question").innerText =
     `Solve this to continue: ${num1} + ${num2} = ?`;
+  document.getElementById("math-answer").value = "";
 }
 
 // Run when page loads
