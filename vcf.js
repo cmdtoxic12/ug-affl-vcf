@@ -8,31 +8,33 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const contactForm = document.querySelector(".contact-reg");
 const submitBtn = document.getElementById("submit-form");
 
+(); // Prevents the default form submission (page reload)
 let num1, num2, correctAnswer;
 
 function generateQuestion() {
   num1 = Math.floor(Math.random() * 10);
   num2 = Math.floor(Math.random() * 10);
+
   correctAnswer = num1 + num2;
 
-  const questionEl = document.getElementById("math-question");
-  const answerEl = document.getElementById("math-answer");
+  const question = document.getElementById("math-question");
+  const answer = document.getElementById("math-answer");
 
-  if (questionEl && answerEl) {
-    questionEl.innerText =
-      `Solve this to continue: ${num1} + ${num2} = ?`;
-
-    answerEl.value = "";
+  if (!question || !answer) {
+    console.error("Math elements not found");
+    return;
   }
+
+  question.innerText =
+    `Solve this to continue: ${num1} + ${num2} = ?`;
+
+  answer.value = "";
 }
 
-window.addEventListener("DOMContentLoaded", () => {
-  generateQuestion();
-});
+window.addEventListener("DOMContentLoaded", generateQuestion);
 // --- 3. EVENT LISTENER ---
 contactForm.addEventListener("submit", async (e) => {
-  e.preventDefault(); // Prevents the default form submission (page reload)
-
+  e.preventDefault
   // Capture input values
   const fullname = document.getElementById("fullname").value.trim();
   const phonenumber = document.getElementById("phonenumber").value.trim();
