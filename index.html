@@ -185,12 +185,17 @@
 
         let vcf = "";
         data.forEach((item) => {
-          vcf += "BEGIN:VCARD\nVERSION:3.0\n";
-          vcf += `FN:${item.fullname}\n`;
-          vcf += `ORG:UG Affiliated;${item.college}\n`;
-          vcf += `TEL;TYPE=CELL:${item.phonenumber}\n`;
-          vcf += "END:VCARD\n";
-        });
+  vcf += "BEGIN:VCARD\n";
+  vcf += "VERSION:3.0\n";
+
+  // Contact name
+  vcf += `FN:${item.fullname} ${item.college}\n`;
+
+  // Phone
+  vcf += `TEL;TYPE=CELL:${item.phonenumber}\n`;
+
+  vcf += "END:VCARD\n";
+});
 
         const blob = new Blob([vcf], { type: "text/vcf" });
         const url = URL.createObjectURL(blob);
