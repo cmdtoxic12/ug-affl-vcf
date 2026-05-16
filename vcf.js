@@ -8,33 +8,10 @@ const _supabase = supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
 const contactForm = document.querySelector(".contact-reg");
 const submitBtn = document.getElementById("submit-form");
 
-(); // Prevents the default form submission (page reload)
-let num1, num2, correctAnswer;
-
-function generateQuestion() {
-  num1 = Math.floor(Math.random() * 10);
-  num2 = Math.floor(Math.random() * 10);
-
-  correctAnswer = num1 + num2;
-
-  const question = document.getElementById("math-question");
-  const answer = document.getElementById("math-answer");
-
-  if (!question || !answer) {
-    console.error("Math elements not found");
-    return;
-  }
-
-  question.innerText =
-    `Solve this to continue: ${num1} + ${num2} = ?`;
-
-  answer.value = "";
-}
-
-window.addEventListener("DOMContentLoaded", generateQuestion);
 // --- 3. EVENT LISTENER ---
 contactForm.addEventListener("submit", async (e) => {
-  e.preventDefault
+  e.preventDefault(); // Prevents the default form submission (page reload)
+
   // Capture input values
   const fullname = document.getElementById("fullname").value.trim();
   const phonenumber = document.getElementById("phonenumber").value.trim();
@@ -56,15 +33,6 @@ if (phone.startsWith("0")) {
   submitBtn.innerText = "Processing...";
 
   try {
-    const userAnswer = parseInt(document.getElementById("math-answer").value);
-
-if (userAnswer !== correctAnswer) {
-  alert("Incorrect answer. Please try again.");
-  generateQuestion(); // new question
-  submitBtn.disabled = false;
-  submitBtn.innerText = "Submit";
-  return;
-}
     // --- 4. SUPABASE INSERTION ---
 const { data: existing } = await _supabase
   .from("contacts")
