@@ -130,28 +130,35 @@
 
       // Fetch entries from Supabase
       async function fetchEntries() {
-        const { data, error } = await client
-          .from("contacts")
-          .order("created_at", { ascending: false });
-        console.log("DATA:", data);
-        console.log("ERROR:", error);
+  const { data, error } = await client
+    .from("contacts")
+    .select("*")
+    .order("created_at", { ascending: false });
 
-        if (error) return console.error(error);
+  console.log("DATA:", data);
+  console.log("ERROR:", error);
 
-        const tbody = document.getElementById("data-rows");
-        tbody.innerHTML = data
-          .map(
-            (item) => `
-                <tr>
-                    <td>${item.fullname}</td>
-                    <td>${item.college}</td>
-                    <td>${item.phonenumber}</td>
-                    <td><button class="btn-del" onclick="deleteEntry('${item.id}')">Delete</button></td>
-                </tr>
-            `,
-          )
-          .join("");
-      }
+  if (error) {
+    alert(error.message);
+    return;
+  }
+
+  const tbody = document.getElementById("data-rows");
+
+  tbody.innerHTML = data.map((item) => `
+    <tr>
+      <td>${item.fullname}</td>
+      <td>${item.college}</td>
+      <td>${item.phonenumber}</td>
+      <td>
+        <button class="btn-del"
+          onclick="deleteEntry('${item.id}')">
+          Delete
+        </button>
+      </td>
+    </tr>
+  `).join("");
+}
 
       // Delete a specific entry
       async function deleteEntry(id) {
