@@ -60,13 +60,14 @@ button {
   transition: all 0.3s ease;
   box-sizing: border-box;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-align: center;
 }
 
 label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
-  text-allign: left;
+  text-align: left;
 }
 
 select {
