@@ -32,7 +32,7 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.2);
   padding: 40px;
   color: blue;
-  text-align: center;
+  text-align: left;
   max-height: 200%;
   overflow-y: auto;
 }
