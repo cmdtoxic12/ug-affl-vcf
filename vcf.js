@@ -14,18 +14,18 @@ function generateQuestion() {
   num1 = Math.floor(Math.random() * 10);
   num2 = Math.floor(Math.random() * 10);
 
+  // Random operator
   const operators = ["+", "-"];
   const op = operators[Math.floor(Math.random() * operators.length)];
 
-  // Prevent negative subtraction
-  if (op === "-" && num2 > num1) {
-    [num1, num2] = [num2, num1];
+  // Calculate answer
+  if (op === "+") {
+    correctAnswer = num1 + num2;
+  } else {
+    correctAnswer = num1 - num2;
   }
 
-  correctAnswer = op === "+"
-    ? num1 + num2
-    : num1 - num2;
-
+  // Display question
   const question = document.getElementById("math-question");
 
   if (question) {
@@ -33,13 +33,13 @@ function generateQuestion() {
       `Solve this to continue: ${num1} ${op} ${num2} = ?`;
   }
 
+  // Clear previous answer
   const answer = document.getElementById("math-answer");
 
   if (answer) {
     answer.value = "";
   }
 }
-
 // Run when page loads
 generateQuestion();
 
