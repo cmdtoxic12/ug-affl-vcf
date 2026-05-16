@@ -139,11 +139,21 @@
   console.log("ERROR:", error);
 
   if (error) {
+    console.error(error);
     alert(error.message);
     return;
   }
 
   const tbody = document.getElementById("data-rows");
+
+  if (!data || data.length === 0) {
+    tbody.innerHTML = `
+      <tr>
+        <td colspan="4">No contacts found.</td>
+      </tr>
+    `;
+    return;
+  }
 
   tbody.innerHTML = data.map((item) => `
     <tr>
