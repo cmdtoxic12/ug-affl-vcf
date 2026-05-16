@@ -42,6 +42,7 @@ function generateQuestion() {
 }
 // Run when page loads
 generateQuestion();
+document.getElementById("math-answer").value = "";
 
 // --- 3. EVENT LISTENER ---
 contactForm.addEventListener("submit", async (e) => {
