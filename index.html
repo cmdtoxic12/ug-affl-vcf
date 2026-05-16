@@ -96,11 +96,9 @@
 
     <script>
       const pass = prompt("Enter Admin Password");
-
-if (!pass || pass !== "admin123") {
-  document.body.innerHTML = "<h1>Access Denied</h1>";
-  throw new Error("Unauthorized");
-}
+      if (pass !== "admin123") {
+        document.body.innerHTML = "Access Denied";
+      }
       // REPLACE with your actual Supabase Details
       const SUPABASE_URL = "https://nianlnujdqnkzlesnlbp.supabase.co";
       const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im5pYW5sbnVqZHFua3psZXNubGJwIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc3MDg2NDQsImV4cCI6MjA5MzI4NDY0NH0.YDu4ejDYnW82Wj1LUBSCwFKHyZA0LLaiif0zTegceW4";
@@ -137,11 +135,7 @@ if (!pass || pass !== "admin123") {
           .select("*")
           .order("created_at", { ascending: false });
 
-        if (error) {
-  console.error("FETCH ERROR:", error);
-  alert(error.message);
-  return;
-}
+        if (error) return console.error(error);
 
         const tbody = document.getElementById("data-rows");
         tbody.innerHTML = data
