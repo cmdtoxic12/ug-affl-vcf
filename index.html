@@ -114,22 +114,32 @@
   font-size: 18px;
 }
 
- .pagination {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
+  .table-wrapper {
+  max-height: 500px;
+  overflow-y: auto;
+
+  border-radius: 12px;
+
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255,255,255,0.3) transparent;
 }
 
-.pagination button {
-  padding: 10px 15px;
-  background: #007bff;
-  border: none;
-  border-radius: 8px;
-  color: white;
-}     
-      
+/* Chrome scrollbar */
+.table-wrapper::-webkit-scrollbar {
+  width: 6px;
+}
+
+.table-wrapper::-webkit-scrollbar-thumb {
+  background: rgba(255,255,255,0.3);
+  border-radius: 20px;
+}    
+
+.admin-table thead {
+  position: sticky;
+  top: 0;
+  background: rgba(0,0,0,0.85);
+  backdrop-filter: blur(10px);
+}
     </style>
   </head>
   <body>
@@ -173,7 +183,7 @@
     <div id="contact-progress"></div>
   </div>
 </div>
-
+   <div class="table-wrapper">
       <table class="admin-table">
         <thead>
           <tr>
@@ -187,14 +197,8 @@
           <!-- Data will load here -->
         </tbody>
       </table>
-      <div class="pagination">
-  <button id="prev-btn">⬅ Previous</button>
-
-  <span id="page-info">Page 1</span>
-
-  <button id="next-btn">Next ➡</button>
-</div>
-    </div>
+   </div>
+      
 
     <script>
       const pass = prompt("Enter Admin Password");
@@ -202,8 +206,8 @@
         document.body.innerHTML = "Access Denied";
       }
 
-      let currentPage = 1;
-      const pageSize = 5;
+      //let currentPage = 1;
+      //const pageSize = 5;
       
       // REPLACE with your actual Supabase Details
       const SUPABASE_URL = "https://nianlnujdqnkzlesnlbp.supabase.co";
@@ -237,14 +241,14 @@
       // Fetch entries from Supabase
      async function fetchEntries(page = 1) {
 
-  const from = (page - 1) * pageSize;
-  const to = from + pageSize - 1;
+  //const from = (page - 1) * pageSize;
+  //const to = from + pageSize - 1;
 
   const { data, error } = await client
     .from("contacts")
     .select("*")
     .order("created_at", { ascending: false })
-    .range(from, to);
+   // .range(from, to);
 
   if (error) {
     console.error(error);
