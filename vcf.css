@@ -47,6 +47,7 @@ input {
   color: gold;
   outline: none;
   transition: 0.3s;
+  font-weight: bold;
 }
 
 button {
