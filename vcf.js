@@ -55,14 +55,24 @@ contactForm.addEventListener("submit", async (e) => {
   
 let phone = phonenumber.replace(/\D/g, "");
 
-if (phone.startsWith("0")) {
-  phone = "233" + phone.substring(1);
+// Remove leading 233 if already entered
+if (phone.startsWith("233")) {
+  phone = phone.substring(3);
 }
-  // Simple validation check
-  if (!fullname || !phonenumber || !college) {
-    alert("Please fill in all fields correctly.");
-    return;
-  }
+
+// Remove leading 0
+if (phone.startsWith("0")) {
+  phone = phone.substring(1);
+}
+
+// Must now be exactly 9 digits
+if (phone.length !== 9) {
+  alert("Enter a valid Ghana phone number.");
+  return;
+}
+
+// Final standardized format
+phone = "233" + phone;
 
   // UI Feedback: Disable button while processing
   submitBtn.disabled = true;
