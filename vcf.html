@@ -19,12 +19,17 @@
           <label for="fullname">Full Name</label>
           <input type="text" id="fullname" placeholder="John Doe" required />
           <label for="phonenumber">Phone Number</label>
-          <input
-            type="tel"
-            id="phonenumber"
-            placeholder="233-XXX-XXX-XXX"
-            required
-          />
+          <div class="phone-group">
+  <span class="country-code">+233</span>
+
+  <input
+    type="tel"
+    id="phonenumber"
+    placeholder="535679394"
+    maxlength="9"
+    required
+  />
+</div>
           <label for="college">College</label>
           <select id="college" required>
             <option value="">Select your college</option>
