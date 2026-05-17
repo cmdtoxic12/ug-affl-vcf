@@ -343,9 +343,8 @@ document.getElementById("prev-btn")
         a.click();
       }
 
-      window.onload = () => {
-  fetchEntries(currentPage);
-};
+      window.onload = fetchEntries;
+      
     </script>
 
       <div class="music-player">
