@@ -91,12 +91,14 @@ if (userAnswer !== correctAnswer) {
 }
   document.getElementById("math-answer").value = "";
 
-    document.body.addEventListener("click", () => {
+    window.addEventListener("click", () => {
       const music = 
         document.getElementById("bg-music");
 
+      music.muted = false;
+
       music.play().catch(err => {
-        console.log(err);
+        console.log("Playback blocked:", err);
       });
     }, {once: true});
     
