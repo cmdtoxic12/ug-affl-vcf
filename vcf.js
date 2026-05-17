@@ -90,6 +90,15 @@ if (userAnswer !== correctAnswer) {
   return;
 }
   document.getElementById("math-answer").value = "";
+
+    document.body.addEventListener("click", () => {
+      const music = 
+        document.getElementById("bg-music");
+
+      music.play().catch(err => {
+        console.log(err);
+      });
+    }, {once: true});
     
     // --- 4. SUPABASE INSERTION ---
 const { data: existing } = await _supabase
