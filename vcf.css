@@ -82,6 +82,30 @@ select {
   transition: 0.3s;
 }
 
+.phone-group {
+  display: flex;
+  align-items: center;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.country-code {
+  padding: 12px;
+  background: rgba(255,255,255,0.2);
+  color: white;
+  font-weight: bold;
+}
+
+.phone-group input {
+  flex: 1;
+  border: none;
+  outline: none;
+  padding: 12px;
+  background: transparent;
+  color: white;
+}
+
 button:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 25px rgba(118, 75, 162, 0.4);
