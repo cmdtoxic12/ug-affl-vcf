@@ -173,19 +173,6 @@
       if (pass !== "admin123") {
         document.body.innerHTML = "Access Denied";
       }
-
-      const music = document.getElementById("bg-music");
-const toggleBtn = document.getElementById("music-toggle");
-
-toggleBtn.addEventListener("click", () => {
-  if (music.paused) {
-    music.play();
-    toggleBtn.innerText = "⏸";
-  } else {
-    music.pause();
-    toggleBtn.innerText = "▶";
-  }
-});
       
       // REPLACE with your actual Supabase Details
       const SUPABASE_URL = "https://nianlnujdqnkzlesnlbp.supabase.co";
@@ -318,6 +305,24 @@ document.getElementById("contact-progress").style.width = percentage + "%";
     <source src="allonsy.m4a" type="audio/mp4" />
   </audio>
 </div>
-    
+          <script>
+  const music = document.getElementById("bg-music");
+  const toggleBtn = document.getElementById("music-toggle");
+
+  toggleBtn.addEventListener("click", async () => {
+    try {
+      if (music.paused) {
+        await music.play();
+        toggleBtn.innerText = "⏸";
+      } else {
+        music.pause();
+        toggleBtn.innerText = "▶";
+      }
+    } catch (err) {
+      console.log("Music error:", err);
+      alert("Tap again or check if the music file path is correct.");
+    }
+  });
+</script>
   </body>
 </html>
