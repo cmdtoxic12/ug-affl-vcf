@@ -40,7 +40,7 @@ body {
 input {
   width: 100%;
   padding: 12px;
-  margin-bottom: 15px;
+  margin-bottom: 10px;
   border: none;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.2);
@@ -104,6 +104,11 @@ select {
   padding: 10px;
   background: transparent;
   color: blue;
+}
+
+#phonenumber {
+  margin-bottom: 10px;
+  margin-top: 10px
 }
 
 button:hover {
