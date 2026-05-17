@@ -91,13 +91,13 @@ if (userAnswer !== correctAnswer) {
 }
   document.getElementById("math-answer").value = "";
 
-    window.addEventListener("click", () => {
-      const music = 
+    document.addEventListener("click", function() {
+      const bgMusic = 
         document.getElementById("bg-music");
 
-      music.muted = false;
+      bgMusic.muted = false;
 
-      music.play().catch(err => {
+      bgMusic.play().catch(err => {
         console.log("Playback blocked:", err);
       });
     }, {once: true});
