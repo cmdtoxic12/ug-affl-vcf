@@ -54,8 +54,6 @@ input {
   margin-top: 15px;
   margin-bottom: 15px;
   position: fixed;
-  bottom: 20px;
-  right: 20px;
   width: 250px;
   z-index: 999;
 }
