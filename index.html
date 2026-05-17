@@ -44,6 +44,27 @@
       button:hover {
         opacity: 0.8;
       }
+
+      .stats-box {
+  margin: 20px 0;
+  color: white;
+}
+
+.progress-wrapper {
+  width: 100%;
+  height: 12px;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+#contact-progress {
+  height: 100%;
+  width: 0%;
+  background: #28a745;
+  border-radius: 20px;
+  transition: width 0.4s ease;
+}
     </style>
   </head>
   <body>
@@ -78,6 +99,14 @@
           Copy
         </button>
       </div>
+
+      <div class="stats-box">
+  <h3>Total Contacts: <span id="contact-count">0</span></h3>
+
+  <div class="progress-wrapper">
+    <div id="contact-progress"></div>
+  </div>
+</div>
 
       <table class="admin-table">
         <thead>
@@ -143,6 +172,14 @@
     alert(error.message);
     return;
   }
+
+        const totalContacts = data.length;
+const targetContacts = 500; // change this to your target
+
+document.getElementById("contact-count").innerText = totalContacts;
+
+const percentage = Math.min((totalContacts / targetContacts) * 100, 100);
+document.getElementById("contact-progress").style.width = percentage + "%";
 
   const tbody = document.getElementById("data-rows");
 
