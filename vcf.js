@@ -110,7 +110,7 @@ if (existing) {
   .insert([
     {
       fullname,
-      phonenumber,
+      phonenumber: phone,
       college,
     },
   ]);
