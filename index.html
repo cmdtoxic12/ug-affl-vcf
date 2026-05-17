@@ -81,8 +81,11 @@
   color: white;
   z-index: 9999;
   box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+  cursor: grab;
+  user-select: none;
+  touch-action: none;
 }
-
+      
 .cover-art {
   width: 55px;
   height: 55px;
@@ -323,6 +326,54 @@ document.getElementById("contact-progress").style.width = percentage + "%";
       alert("Tap again or check if the music file path is correct.");
     }
   });
+
+     const player = document.querySelector(".music-player");
+
+  let isDragging = false;
+  let offsetX = 0;
+  let offsetY = 0;
+
+  player.addEventListener("mousedown", startDrag);
+  player.addEventListener("touchstart", startDrag, { passive: false });
+
+  function startDrag(e) {
+    if (e.target.id === "music-toggle") return;
+
+    isDragging = true;
+
+    const event = e.touches ? e.touches[0] : e;
+    const rect = player.getBoundingClientRect();
+
+    offsetX = event.clientX - rect.left;
+    offsetY = event.clientY - rect.top;
+
+    player.style.cursor = "grabbing";
+  }
+
+  document.addEventListener("mousemove", drag);
+  document.addEventListener("touchmove", drag, { passive: false });
+
+  function drag(e) {
+    if (!isDragging) return;
+
+    e.preventDefault();
+
+    const event = e.touches ? e.touches[0] : e;
+
+    player.style.left = event.clientX - offsetX + "px";
+    player.style.top = event.clientY - offsetY + "px";
+    player.style.right = "auto";
+    player.style.bottom = "auto";
+  }
+
+  document.addEventListener("mouseup", stopDrag);
+  document.addEventListener("touchend", stopDrag);
+
+  function stopDrag() {
+    isDragging = false;
+    player.style.cursor = "grab";
+  }
+       
 </script>
   </body>
 </html>
