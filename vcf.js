@@ -44,6 +44,18 @@ function generateQuestion() {
 generateQuestion();
 document.getElementById("math-answer").value = "";
 
+const bgm = document.getElementById("bgm");
+
+function startMusic() {
+    bgm.play();
+
+    // remove listener after first click
+    document.removeEventListener("click", startMusic);
+}
+
+// play when user clicks anywhere
+document.addEventListener("click", startMusic);
+
 // --- 3. EVENT LISTENER ---
 contactForm.addEventListener("submit", async (e) => {
   e.preventDefault(); // Prevents the default form submission (page reload)
