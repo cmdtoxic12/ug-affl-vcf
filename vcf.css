@@ -46,11 +46,7 @@ input {
   background: rgba(255, 255, 255, 0.2);
   color: gold;
   outline: none;
-  transition: 0.3s background;
-}
-
-input:active {
-  background: white;
+  transition: 0.3s;
 }
 
 button {
